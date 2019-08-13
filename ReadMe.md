@@ -64,3 +64,20 @@ public class Function : ALambdaApiGatewayFunction {
     }
 }
 ```
+
+## Deploy
+
+1. Install [λ# CLI](https://lambdasharp.net)
+```
+dotnet tool install -g LambdaSharp.Tool
+```
+
+2. Create a λ# deployment tier
+```
+lash init
+```
+
+3. Deploy module (compiles the C# code, generates the CloudFormation template, and uploads them)
+```
+lash deploy
+```
