@@ -1,0 +1,15 @@
+Module: My.BestApp
+Items:
+
+  - Resource: BestAppBucket
+    Type: AWS::S3::Bucket
+    Scope: BestAppFunction
+    Allow: ReadWrite
+
+  - Function: BestAppFunction
+    Memory: 256
+    Timeout: 30
+    Sources:
+
+      - Api: POST:/put
+        Invoke: Put
