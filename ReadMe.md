@@ -17,14 +17,17 @@ Items:
     Timeout: 30
     Sources:
 
-      - Api: POST:/put
-        Invoke: Put
+      - Api: POST:/upload
+        Invoke: Upload
+
+  - Variable: ApiUrl
+    Value: !Ref Module::RestApi::Url
+    Scope: public
 ```
 
 ## Lambda Function Definition
 ```csharp
-
-public class PutRequest {
+public class UploadRequest {
 
     //--- Properties ---
     [JsonRequired]
@@ -34,7 +37,7 @@ public class PutRequest {
     public string Content { get; set; }
 }
 
-public class PutResponse {
+public class UploadResponse {
 
     //--- Properties ---
     public string Status { get; set; }
@@ -52,13 +55,14 @@ public class Function : ALambdaApiGatewayFunction {
         _s3Client = new AmazonS3Client();
     }
 
-    public async Task<PutResponse> Put(PutRequest request) {
+    public async Task<UploadResponse> UploadAsync(UploadRequest request) {
         await _s3Client.PutObjectAsync(new PutObjectRequest {
             BucketName = _bucketName,
             Key = request.Name,
-            ContentBody = request.Content
+            ContentBody = request.Content,
+            ContentType = "text/plain"
         });
-        return new PutResponse {
+        return new UploadResponse {
             Status = "success"
         };
     }
